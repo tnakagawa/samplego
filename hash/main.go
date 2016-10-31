@@ -6,6 +6,7 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
+	"encoding/base64"
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
@@ -14,9 +15,23 @@ import (
 )
 
 func main() {
+	fmt.Println("=============================================================")
+	test()
+	fmt.Println("=============================================================")
 	testSha1()
+	fmt.Println("=============================================================")
 	testSha256()
+	fmt.Println("=============================================================")
 	testSha512()
+	fmt.Println("=============================================================")
+
+}
+
+func test() {
+	dk := pbkdf2([]byte("password"), []byte("salt"), 1, 64, sha512.New)
+	fmt.Println(hex.EncodeToString(dk),
+		hex.EncodeToString(dk) == "867f70cf1ade02cff3752599a3a53dc4af34c7a669815ae5d513554e1c8cf252c02d470a285a0501bad999bfe943c08f050235d7d68b1da55e63f73b60a57fce")
+	fmt.Println(base64.StdEncoding.EncodeToString(dk))
 }
 
 func testSha1() {
